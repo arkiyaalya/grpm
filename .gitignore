@@ -1,0 +1,79 @@
+# ======================
+# SENSITIVE / SECRET FILES  ← NEVER push these
+# ======================
+FallenRobot/config.py
+.env
+*.env
+secrets.txt
+
+# Pyrogram / Telethon session files (contain login tokens!)
+*.session
+*.session-journal
+Fallen.session
+FallenRobot.session
+tbot.session
+
+# ======================
+# LOCAL WINDOWS SCRIPTS  ← Only useful on your PC
+# ======================
+Git_Push.bat
+Git_Pull.bat
+start.bat
+restart.bat
+start_service.bat
+Setup venv.bat
+
+# ======================
+# IDE & TYPE-CHECKER CONFIG  ← Not needed on server
+# ======================
+pyrightconfig.json
+pyrefly.toml
+.vscode/
+.idea/
+
+# ======================
+# PYTHON CACHE  ← Auto-generated, never push
+# ======================
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+
+# ======================
+# VIRTUAL ENVIRONMENT  ← Server installs its own
+# ======================
+env/
+venv/
+.venv/
+ENV/
+
+# ======================
+# TEMP / DOWNLOAD FILES  ← Bot generates these at runtime
+# ======================
+downloads/
+TEMP/
+*.jpg
+*.png
+*.mp4
+*.gif
+*.webp
+*.zip
+*.pdf
+fallen.png
+memify.webp
+okgoogle.png
+
+# ======================
+# LOGS
+# ======================
+*.log
+logs/
+
+# ======================
+# OS FILES
+# ======================
+.DS_Store
+Thumbs.db
+desktop.ini
