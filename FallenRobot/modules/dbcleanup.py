@@ -133,11 +133,50 @@ def callback_button(update: Update, context: CallbackContext):
             query.answer("You are not allowed to use this.")
 
 
+@dev_plus
+def cleardb(update: Update, context: CallbackContext):
+    msg = update.effective_message
+    
+    # Send initial status
+    status_msg = msg.reply_text("Starting database wipe...")
+    
+    # 1. Clear SQL
+    try:
+        from FallenRobot.modules.sql import BASE
+        BASE.metadata.drop_all(bind=BASE.metadata.bind)
+        BASE.metadata.create_all(bind=BASE.metadata.bind)
+        sql_status = "✅ SQL database cleared successfully.\n"
+    except Exception as e:
+        sql_status = f"❌ Failed to clear SQL database: {e}\n"
+        
+    # 2. Clear MongoDB
+    try:
+        from pymongo import MongoClient
+        from FallenRobot import MONGO_DB_URI
+        if MONGO_DB_URI:
+            mongo_client = MongoClient(MONGO_DB_URI)
+            mongo_client.drop_database("Anonymous")
+            mongo_client.drop_database("FallenRobot")
+            mongo_status = "✅ MongoDB databases ('Anonymous' and 'FallenRobot') cleared successfully.\n"
+        else:
+            mongo_status = "ℹ️ MONGO_DB_URI not configured. Skipping MongoDB wipe.\n"
+    except Exception as e:
+        mongo_status = f"❌ Failed to clear MongoDB: {e}\n"
+        
+    status_msg.edit_text(
+        f"<b>Database Wipe Status:</b>\n\n{sql_status}{mongo_status}\nBot is now reset.",
+        parse_mode="HTML"
+    )
+
+
 DB_CLEANUP_HANDLER = CommandHandler("dbcleanup", dbcleanup, run_async=True)
 BUTTON_HANDLER = CallbackQueryHandler(callback_button, pattern="db_.*", run_async=True)
+CLEARDB_HANDLER = CommandHandler("cleardb", cleardb, run_async=True)
 
 dispatcher.add_handler(DB_CLEANUP_HANDLER)
 dispatcher.add_handler(BUTTON_HANDLER)
+dispatcher.add_handler(CLEARDB_HANDLER)
 
 __mod_name__ = "DB Cleanup"
-__handlers__ = [DB_CLEANUP_HANDLER, BUTTON_HANDLER]
+__handlers__ = [DB_CLEANUP_HANDLER, BUTTON_HANDLER, CLEARDB_HANDLER]
+
