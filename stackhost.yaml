@@ -1,3 +1,7 @@
-runtime: python
-build_command: pip3 install -r requirements.txt
-start_command: python3 -m FallenRobot
+runtime:
+  image: python:3.10
+
+commands:
+  build:
+    - "pip install -r requirements.txt"
+  start: "python3 -m FallenRobot"
